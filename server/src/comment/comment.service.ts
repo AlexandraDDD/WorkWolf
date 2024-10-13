@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Comment } from './comment.entity';
-import { CreateCommentDto, validateCreateCommentDto } from './dto/create-comment.dto';
+import { CreateCommentDto } from './dto/create-comment.dto';
 
 @Injectable()
 export class CommentsService {
@@ -11,13 +11,13 @@ export class CommentsService {
   ) {}
 
   async create(createCommentDto: CreateCommentDto): Promise<Comment> {
-    validateCreateCommentDto(createCommentDto);
-    const commentData ={
+    this.validateProjectOrTaskId(createCommentDto);
+    const commentData = {
       text: createCommentDto.text,
       userId: createCommentDto.userId,
-      projectId: createCommentDto.projectId,
-      taskId: createCommentDto.taskId,
-    }
+      ...(createCommentDto.projectId ? { projectId: createCommentDto.projectId } : {}),
+      ...(createCommentDto.taskId ? { taskId: createCommentDto.taskId } : {}),
+    };
     return this.commentModel.create(commentData);
   }
 
@@ -31,12 +31,22 @@ export class CommentsService {
 
   async update(id: string, updateCommentDto: Partial<CreateCommentDto>): Promise<Comment> {
     const comment = await this.findOne(id);
-    validateCreateCommentDto({ ...comment, ...updateCommentDto });
+    this.validateProjectOrTaskId({ ...comment, ...updateCommentDto });
     return comment.update(updateCommentDto);
   }
 
   async remove(id: string): Promise<void> {
     const comment = await this.findOne(id);
     await comment.destroy();
+  }
+
+  private validateProjectOrTaskId(commentDto: CreateCommentDto): void {
+    if (commentDto.projectId && commentDto.taskId) {
+      throw new Error('Either projectId or taskId must be provided, but not both.');
+    }
+
+    if (!commentDto.projectId && !commentDto.taskId) {
+      throw new Error('Comment must be associated with either a project or a task');
+    }
   }
 }

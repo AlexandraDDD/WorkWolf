@@ -1,20 +1,62 @@
-import { BeforeCreate, Column, Model, PrimaryKey, Table } from 'sequelize-typescript';
+import { ApiProperty } from '@nestjs/swagger';
+import { Exclude } from 'class-transformer';
+import { BeforeCreate, Column, Model, PrimaryKey, Table, DataType, BelongsToMany, HasMany } from 'sequelize-typescript';
+import { UserRole } from 'src/common/UserRole/user-role.entity';
+import { UserTeam } from 'src/common/UserTeam/user-team.entity';
+import { Role } from 'src/roles/roles.entity';
+import { Task } from 'src/task/task.entity';
+
+import { Team } from 'src/team/team.entity';
 import { v4 as uuidv4 } from 'uuid';
 
-@Table
+@Table({ timestamps: false }) 
 export class User extends Model {
+  @ApiProperty({example: '1'})
   @PrimaryKey
-  @Column
+  @Column({
+    type: DataType.UUID,
+    defaultValue: DataType.UUIDV4,
+  })
   id: string;
-
-  @Column
+  
+  @ApiProperty({example: 'Jhon'})
+  @Column({
+    type: DataType.STRING,
+    allowNull: false,
+  })
   name: string;
-
-  @Column
+  
+  @ApiProperty({example: 'mail@email.ru'})
+  @Column({
+    type: DataType.STRING,
+    allowNull: false,
+    unique: true,
+    validate: {
+      isEmail: true,
+    },
+  })
   email: string;
 
-  @Column
+  @ApiProperty({example: '1234'})
+  @Column({
+    type: DataType.STRING,
+    allowNull: false,
+  })
   password: string;
+
+  @Exclude()
+  @BelongsToMany(() => Team, () => UserTeam)
+  teams: Team[];
+
+  @BelongsToMany(() => Role, () => UserRole)
+  roles: Role[];
+
+  @HasMany(() => Task)
+  tasks: Task[];
+
+/*   @HasMany(() => Comment)
+  comments: Task[]; */
+
 
   @BeforeCreate
   static generateId(instance: User) {

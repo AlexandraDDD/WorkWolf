@@ -6,7 +6,7 @@ export const sequelizeConfig = {
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DATABASE,
-  models: [__dirname + '/src/**/*.model.ts'],
+  models: [__dirname + '/src/**/*.entity.ts'],
   seederStorage: 'sequelize',
   seederStorageTableName: 'seeds',
   define: {

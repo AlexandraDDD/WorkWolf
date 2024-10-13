@@ -1,27 +1,37 @@
-import { BeforeCreate, BelongsTo, Column, ForeignKey, Model, PrimaryKey, Table } from 'sequelize-typescript';
-import { Project } from 'src/project/project.entity';
+import { BeforeCreate, BelongsTo, Column, ForeignKey, Model, PrimaryKey, Table, DataType } from 'sequelize-typescript';
 import { Task } from 'src/task/task.entity';
 import { v4 as uuidv4 } from 'uuid';
 
-@Table
+@Table({ timestamps: false }) 
 export class Subtask extends Model {
   @PrimaryKey
-  @Column
+  @Column({
+    type: DataType.UUID,
+    defaultValue: DataType.UUIDV4,
+  })
   id: string;
 
-  @Column
+  @Column({
+    type: DataType.STRING,
+    allowNull: false,
+  })
   name: string;
 
-  @Column
+  @Column({
+    type: DataType.TEXT,
+  })
   description: string;
 
   @ForeignKey(() => Task)
-  @Column
+  @Column({
+    type: DataType.UUID,
+    allowNull: false,
+  })
   taskId: string;
 
   @BelongsTo(() => Task)
   task: Task;
-  
+
   @BeforeCreate
   static generateId(instance: Subtask) {
     instance.id = uuidv4();

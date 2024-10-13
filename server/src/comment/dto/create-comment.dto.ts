@@ -13,7 +13,7 @@ export class CreateCommentDto {
   taskId?: string;
 }
 
-function isProjectId(id: string | undefined): id is string {
+/* function isProjectId(id: string | undefined): id is string {
   return id !== undefined && id.startsWith('project-');
 }
 
@@ -31,3 +31,4 @@ export function validateCreateCommentDto(dto: CreateCommentDto): void {
   }
 }
 
+ */

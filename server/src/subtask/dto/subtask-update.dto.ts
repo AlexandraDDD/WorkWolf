@@ -9,6 +9,4 @@ export class UpdateSubtaskDto {
   @IsString()
   description?: string;
 
-  @IsOptional()
-  taskId?: string;
 }

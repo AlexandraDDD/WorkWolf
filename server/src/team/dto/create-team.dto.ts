@@ -1,6 +1,4 @@
-import { IsEmail, IsNotEmpty, IsString, ValidateNested } from 'class-validator';
-import { Type } from 'class-transformer';
-import { User } from 'src/user/user.entity';
+import { IsArray, IsUUID, IsNotEmpty, IsString, ValidateNested } from 'class-validator';
 
 export class CreateTeamDto {
   @IsNotEmpty()
@@ -8,8 +6,7 @@ export class CreateTeamDto {
   name: string;
 
   @IsNotEmpty()
-  @ValidateNested({ each: true })
-  @Type(() => User)
-  users: User[];
-
+  @IsArray()
+  @IsUUID(4, { each: true })
+  userIds: string[];
 }

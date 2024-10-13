@@ -16,7 +16,7 @@ export enum ProjectStatus {
   CANCELLED = 'CANCELLED',
 }
 
-@Table
+@Table({ timestamps: false }) 
 export class TaskStatusEntity extends Model {
   @PrimaryKey
   @Column
