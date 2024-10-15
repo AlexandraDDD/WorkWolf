@@ -21,24 +21,53 @@ export class TasksService {
   ) {}
 
   async create(createTaskDto: CreateTaskDto): Promise<Task> {
-    const TasktData = {
+    let deadline = createTaskDto.deadline ? new Date(createTaskDto.deadline) : undefined;
+    if (deadline) {
+      deadline.setSeconds(0, 0); // Убираем секунды
+      
+      const today = new Date();
+      if (deadline < today) {
+        throw new HttpException('Deadline cannot be in the past', HttpStatus.BAD_REQUEST);
+      }
+    }
+
+    const taskData = {
       name: createTaskDto.name,
       description: createTaskDto.description,
+      deadline: deadline,
+      priority: createTaskDto.priority,
       projectId: createTaskDto.projectId,
       userId: createTaskDto.userId,
       status: createTaskDto.status,
-      deadline: createTaskDto.deadline,
-      priority: createTaskDto.priority,
     };
-    return this.taskModel.create(TasktData);
+
+    return this.taskModel.create(taskData);
   }
 
   async findAll(): Promise<Task[]> {
-    return this.taskModel.findAll();
+    return this.taskModel.findAll({
+      include:[
+        {model: Subtask,
+          attributes: { exclude: ['taskId'] },
+         },
+        {model: Comment,
+          attributes: { exclude: ['taskId'] },
+         },
+      ]
+    });
   }
 
   async findOne(id: string): Promise<Task> {
-    return this.taskModel.findByPk(id);
+    return this.taskModel.findByPk(id, {
+      include:[
+        {model: Subtask,
+          attributes: { exclude: ['taskId'] },
+         },
+        {model: Comment,
+          attributes: { exclude: ['taskId'] },
+         },
+      ]
+    });
   }
 
   async update(id: string, updateTaskDto: UpdateTaskDto): Promise<Task> {
@@ -85,8 +114,12 @@ export class TasksService {
   
      async createStatus(taskId: string, status: TaskStatus): Promise<Task> {
       const task = await this.findOne(taskId);
+
       if (!task) {
         throw new HttpException('Проект с таким id отсутствует', HttpStatus.BAD_REQUEST);
+      }
+      if (!Object.values(TaskStatus).includes(status)) {
+        throw new HttpException('Неверный статус задачи', HttpStatus.BAD_REQUEST);
       }
   
       task.status = status;
@@ -97,6 +130,9 @@ export class TasksService {
       const task = await this.findOne(taskId);
       if (!task) {
         throw new HttpException('Проект с таким id отсутствует', HttpStatus.BAD_REQUEST);
+      }
+      if (!Object.values(TaskStatus).includes(status)) {
+        throw new HttpException('Неверный статус задачи', HttpStatus.BAD_REQUEST);
       }
   
       task.status = status;

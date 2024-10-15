@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Delete, Put, HttpException, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Put, HttpException, HttpStatus, UseInterceptors, UploadedFile } from '@nestjs/common';
 import { ProjectService } from './project.service';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
@@ -6,6 +6,7 @@ import { ProjectStatus } from './project.entity';
 import { CreateCommentDto } from 'src/comment/dto/create-comment.dto';
 
 import { ApiTags } from '@nestjs/swagger';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @ApiTags('Projects')
 @Controller('projects')
@@ -68,8 +69,12 @@ export class ProjectController {
     return this.projectService.updateStatus(projectId, status);
   }
 
+  /* 
   @Delete(':projectId/status')
   deleteStatus(@Param('projectId') projectId: string) {
     return this.projectService.deleteStatus(projectId);
-  }
+  } 
+  */
+
+
 }

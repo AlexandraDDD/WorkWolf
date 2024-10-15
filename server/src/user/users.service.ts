@@ -29,16 +29,6 @@ export class UsersService {
   async findAll(): Promise<User[]> {
     return this.usersRepository.findAll({
       attributes: { exclude: ['password'] },
-      include: [
-        {
-          model: Team,
-          attributes: { exclude: ['UserTeam'] },
-        },
-        {
-          model: Task,
-          /* attributes: { exclude: ['UserTeam'] }, */
-        },
-      ],
     });
   }
 

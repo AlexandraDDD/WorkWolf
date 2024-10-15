@@ -56,14 +56,11 @@ export class TeamsService {
       include: [
         {
           model: User,
-          attributes: { exclude: [ 'createdAt', 'updatedAt', 'UserTeam', 'password'] },
+          attributes: { exclude: [ 'UserTeam', 'password'] },
         },
       ],
     });
   }
-  
-  
-
   async update(id: string, updateTeamDto: UpdateTeamDto): Promise<Team> {
     const team = await this.findOne(id);
     return team.update(updateTeamDto);

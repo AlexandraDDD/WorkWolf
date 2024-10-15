@@ -27,12 +27,20 @@ export class Project extends Model {
   })
   name: string;
 
+  @Column({
+    type: DataType.TEXT,
+    allowNull: true,
+  })
+  files: string;
+
   @ForeignKey(() => Team)
   @Column({
     type: DataType.UUID,
     allowNull: false,
   })
   teamId: string;
+
+
 
   @BelongsTo(() => Team)
   team: Team;

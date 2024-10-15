@@ -5,7 +5,7 @@ import { CreateCommentDto } from './dto/create-comment.dto';
 
 @Injectable()
 export class CommentsService {
-  constructor(
+  /* constructor(
     @InjectModel(Comment)
     private commentModel: typeof Comment,
   ) {}
@@ -48,5 +48,5 @@ export class CommentsService {
     if (!commentDto.projectId && !commentDto.taskId) {
       throw new Error('Comment must be associated with either a project or a task');
     }
-  }
+  } */
 }

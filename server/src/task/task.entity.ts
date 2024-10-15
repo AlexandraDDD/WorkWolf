@@ -41,7 +41,7 @@ export class Task extends Model {
 
   @Column({
     type: DataType.DATE,
-    allowNull: true,
+    allowNull: false,
   })
   deadline: Date;
 
@@ -87,8 +87,12 @@ export class Task extends Model {
   })
   status: TaskStatus;
 
+  
   @BeforeCreate
   static generateId(instance: Task) {
     instance.id = uuidv4();
+    if (instance.deadline) {
+      instance.deadline.setSeconds(0, 0);
+    }
   }
 }

@@ -5,7 +5,7 @@ import { Comment } from './comment.entity';
 
 @Controller('comments')
 export class CommentsController {
-  constructor(private readonly commentsService: CommentsService) {}
+ /*  constructor(private readonly commentsService: CommentsService) {}
 
   @Post()
   async create(@Body() createCommentDto: CreateCommentDto): Promise<Comment> {
@@ -30,5 +30,5 @@ export class CommentsController {
   @Delete(':id')
   async remove(@Param('id') id: string): Promise<void> {
     return this.commentsService.remove(id);
-  }
+  } */
 }

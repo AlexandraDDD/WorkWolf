@@ -22,6 +22,7 @@ export class ProjectService {
       name: createProjectDto.name,
       teamId: createProjectDto.teamId,
       status: createProjectDto.status,
+      file: [],
     };
     return this.projectModel.create(projectData);
   }
@@ -80,9 +81,12 @@ export class ProjectService {
       throw new HttpException('Отсутствует projectId', HttpStatus.BAD_REQUEST)
     }
     const project = await this.findOne(createCommentDto.projectId)
-
     if (!project){
       throw new HttpException('Проект с таким id отсутствует', HttpStatus.BAD_REQUEST)
+    }
+    const user = await this.findOne(createCommentDto.userId)
+    if (!project){
+      throw new HttpException('Пользователь с таким id отсутствует', HttpStatus.BAD_REQUEST)
     }
     
     const commentData = {
@@ -111,6 +115,11 @@ export class ProjectService {
       throw new HttpException('Проект с таким id отсутствует', HttpStatus.BAD_REQUEST);
     }
 
+    
+    if (!Object.values(ProjectStatus).includes(status)) {
+      throw new HttpException('Неверный статус проекта', HttpStatus.BAD_REQUEST);
+    }
+
     project.status = status;
     return project.save();
   }
@@ -121,11 +130,16 @@ export class ProjectService {
       throw new HttpException('Проект с таким id отсутствует', HttpStatus.BAD_REQUEST);
     }
 
+    
+    if (!Object.values(ProjectStatus).includes(status)) {
+      throw new HttpException('Неверный статус проекта', HttpStatus.BAD_REQUEST);
+    }
+
     project.status = status;
     return project.save();
   }
 
-  async deleteStatus(projectId: string): Promise<Project> {
+ /*  async deleteStatus(projectId: string): Promise<Project> {
     const project = await this.findOne(projectId);
     if (!project) {
       throw new HttpException('Проект с таким id отсутствует', HttpStatus.BAD_REQUEST);
@@ -133,5 +147,20 @@ export class ProjectService {
 
     project.status = ProjectStatus.NONE; 
     return project.save();
-  }
+  } */
+
+
+ /*    async addFile(projectId: string, fileUrl: string): Promise<Project> {
+      const project = await this.findOne(projectId);
+      if (!project) {
+        throw new HttpException('Проект с таким id отсутствует', HttpStatus.BAD_REQUEST);
+      }
+  
+      if (!project.files) {
+        project.files = [];
+      }
+  
+      project.files.push(fileUrl);
+      return project.save();
+    } */
 }

@@ -21,7 +21,7 @@ export class UserTeamService {
   async bulkCreate(userTeams: Partial<UserTeam>[]): Promise<UserTeam[]> {
     return this.userTeamModel.bulkCreate(userTeams);
   }
-  async findAll(): Promise<UserTeam[]> {
+ /*  async findAll(): Promise<UserTeam[]> {
     return this.userTeamModel.findAll();
   }
 
@@ -32,5 +32,5 @@ export class UserTeamService {
   async remove(id: string): Promise<void> {
     const userTeam = await this.findOne(id);
     await userTeam.destroy();
-  }
+  } */
 }
