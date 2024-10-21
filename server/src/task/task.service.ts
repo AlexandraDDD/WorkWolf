@@ -116,7 +116,7 @@ export class TasksService {
       const task = await this.findOne(taskId);
 
       if (!task) {
-        throw new HttpException('Проект с таким id отсутствует', HttpStatus.BAD_REQUEST);
+        throw new HttpException('Задача с таким id отсутствует', HttpStatus.BAD_REQUEST);
       }
       if (!Object.values(TaskStatus).includes(status)) {
         throw new HttpException('Неверный статус задачи', HttpStatus.BAD_REQUEST);
@@ -129,7 +129,7 @@ export class TasksService {
     async updateStatus( taskId: string,  status: TaskStatus): Promise<Task> {
       const task = await this.findOne(taskId);
       if (!task) {
-        throw new HttpException('Проект с таким id отсутствует', HttpStatus.BAD_REQUEST);
+        throw new HttpException('Задача с таким id отсутствует', HttpStatus.BAD_REQUEST);
       }
       if (!Object.values(TaskStatus).includes(status)) {
         throw new HttpException('Неверный статус задачи', HttpStatus.BAD_REQUEST);

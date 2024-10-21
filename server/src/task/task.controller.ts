@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Put, Delete, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Body, Param, Patch } from '@nestjs/common';
 import { PriorityLevel, Task, TaskStatus } from './task.entity';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
@@ -60,7 +60,7 @@ export class TasksController {
       return this.tasksService.createStatus(taskId, status);
     }
   
-    @Put(':taskId/status')
+    @Patch(':taskId/status')
     async updateStatus(@Param('taskId') taskId: string, @Body('status') status: TaskStatus): Promise<Task> {
       return this.tasksService.updateStatus(taskId, status);
     }
@@ -84,14 +84,14 @@ export class TasksController {
   
     /* ------------------DEADLINE----------------- */
   
-    @Put(':taskId/deadline')
+    @Patch(':taskId/deadline')
     async updateDeadline(@Param('taskId') taskId: string, @Body('deadline') deadline: Date): Promise<Task> {
       return this.tasksService.updateDeadline(taskId, deadline);
     }
   
     /* ------------------PRIORITY----------------- */
   
-    @Put(':taskId/priority')
+    @Patch(':taskId/priority')
     async updatePriority(@Param('taskId') taskId: string, @Body('priority') priority: PriorityLevel): Promise<Task> {
       return this.tasksService.updatePriority(taskId, priority);
     }

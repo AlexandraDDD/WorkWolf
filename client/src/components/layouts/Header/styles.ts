@@ -6,7 +6,7 @@ export const HeaderWrapper = styled.div`
 `
 
 export const HeaderContainer = styled.header`
-  height: 50px;
+  height: 5vh;
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   gap: 16px;

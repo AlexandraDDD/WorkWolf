@@ -16,7 +16,7 @@ export enum TaskStatus {
     id: string;
     name: string;
     description: string;
-    deadline: Date;
+    deadline: string;
     priority: PriorityLevel;
     projectId: string;
     userId: string;

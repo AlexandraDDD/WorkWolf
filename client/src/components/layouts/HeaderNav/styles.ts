@@ -24,6 +24,7 @@ export const NavLink = styled(Link)`
     transition: all 0.2s ease;
     color: ${({ theme }) => theme.colors.white};
     text-transform: none;
+    flex-wrap: nowrap;
 
 
 `;
